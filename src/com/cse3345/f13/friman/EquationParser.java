@@ -66,7 +66,7 @@ public class EquationParser {
 	public ArrayList<String> tokenizeEquation(String preprocessedInput) {
 		ArrayList<String> tokens = new ArrayList<String>();
 		
-		String[] splitted = preprocessedInput.split("(?<=[-+*/])|(?=[-+*/])");
+		String[] splitted = preprocessedInput.split("\\s");
 		
 		for(String token : splitted) {
 			tokens.add(token.trim());
