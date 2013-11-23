@@ -18,6 +18,7 @@ import com.google.android.glass.touchpad.GestureDetector;
 public class EquationRecognizer extends Activity {
 
 	private GestureDetector mGestureDetector;
+	private EquationParser mEquationParser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,9 @@ public class EquationRecognizer extends Activity {
 
 		// Add a gesture recognizer to handle the tap event
 		mGestureDetector = createGestureDetector(this);
+
+		// Instantiate an EquationParser class to parse the input equations
+		mEquationParser = new EquationParser();
 	}
 
 	@Override
