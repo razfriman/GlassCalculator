@@ -9,6 +9,12 @@ import android.view.MotionEvent;
 import com.google.android.glass.touchpad.Gesture;
 import com.google.android.glass.touchpad.GestureDetector;
 
+/**
+ * 
+ * @author Raz Friman
+ * @version 1.0
+ * The main activity class. This class handles all of the actions associated with the application.
+ */
 public class EquationRecognizer extends Activity {
 
 	
@@ -29,6 +35,11 @@ public class EquationRecognizer extends Activity {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param context
+	 * @return a GestureDetector that handles all of the gesture events
+	 */
 	private GestureDetector createGestureDetector(Context context) {
 	    GestureDetector gestureDetector = new GestureDetector(context);
 	        //Create a base listener for generic gestures
@@ -52,12 +63,16 @@ public class EquationRecognizer extends Activity {
 	                return false;
 	            }
 	        });
+	        
+	        
 	        gestureDetector.setFingerListener(new GestureDetector.FingerListener() {
 	            @Override
 	            public void onFingerCountChanged(int previousCount, int currentCount) {
 	              // do something on finger count changes
 	            }
 	        });
+	        
+	        
 	        gestureDetector.setScrollListener(new GestureDetector.ScrollListener() {
 	            @Override
 	            public boolean onScroll(float displacement, float delta, float velocity) {
@@ -68,7 +83,7 @@ public class EquationRecognizer extends Activity {
 	        return gestureDetector;
 	    }
 
-	    /*
+	    /**
 	     * Send generic motion events to the gesture detector
 	     */
 	    @Override
@@ -78,5 +93,4 @@ public class EquationRecognizer extends Activity {
 	        }
 	        return false;
 	    }
-
 }
