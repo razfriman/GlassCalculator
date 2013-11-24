@@ -11,6 +11,7 @@ import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.widget.TextView;
 
 import com.google.android.glass.touchpad.Gesture;
 import com.google.android.glass.touchpad.GestureDetector;
@@ -64,7 +65,13 @@ public class EquationRecognizer extends Activity {
 		
 		double result = mEquationParser.parseEquation(spokenText);
 		
-		// TODO: Display the input and output on the Glass UI
+		// Set the input
+		TextView inputTextView = (TextView) findViewById(R.id.input_expression_text_view);
+		inputTextView.setText(convertedInput);
+		
+		// Set the result
+		TextView resultTextView = (TextView) findViewById(R.id.result_text_view);
+		resultTextView.setText("Answer: " + result);		
 	}
 	
 	@Override
