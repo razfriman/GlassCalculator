@@ -15,7 +15,7 @@ This application is able to analyze a user's voice as input in order to solve si
 
 After listening for the user's input, the application processes and analyzes the input to determine the equation that was spoken.
 
-After parsing the input from the user, the application calculates the arithmetic value of the equation and display the answer
+After parsing the input from the user, the application calculates the arithmetic value of the equation and displays the answer
 
 
 Parser Implementation
