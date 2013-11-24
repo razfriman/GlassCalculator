@@ -1,13 +1,14 @@
 package com.cse3345.f13.friman;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -25,10 +26,10 @@ import com.google.android.glass.touchpad.GestureDetector;
 public class EquationRecognizer extends Activity {
 
 	private static final int SPEECH_REQUEST = 0;
-	
+
 	private GestureDetector mGestureDetector;
 	private EquationParser mEquationParser;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,59 +42,64 @@ public class EquationRecognizer extends Activity {
 
 		// Instantiate an EquationParser class to parse the input equations
 		mEquationParser = new EquationParser();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
 
 		ArrayList<String> voiceResults = getIntent().getExtras()
 				.getStringArrayList(RecognizerIntent.EXTRA_RESULTS);
 		String spokenText = voiceResults.get(0);
-		
+
+		Log.d("RAZ", "On Start Text: " + spokenText);
 		calculateResult(spokenText);
 	}
-	
+
 	private void displaySpeechRecognizer() {
-	    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-	    startActivityForResult(intent, SPEECH_REQUEST);
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+				getString(R.string.glass_voice_prompt));
+		startActivityForResult(intent, SPEECH_REQUEST);
 	}
-	
+
 	private void calculateResult(String spokenText) {
-		
+
+		Log.d("RAZ", "Calculate: " + spokenText);
 		String convertedInput = mEquationParser.preprocessEquation(spokenText);
-		
+
 		double result = mEquationParser.parseEquation(spokenText);
+		String resultString = String.format(Locale.US, "%.2f", result);
 		
 		// Set the input
 		TextView inputTextView = (TextView) findViewById(R.id.input_expression_text_view);
 		inputTextView.setText(convertedInput);
-		
+
 		// Set the result
 		TextView resultTextView = (TextView) findViewById(R.id.result_text_view);
-		resultTextView.setText("Answer: " + result);		
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.ask_again) {
-			displaySpeechRecognizer();
-		}
-		
-		return super.onOptionsItemSelected(item);
+		resultTextView.setText("Answer: " + resultString);
+
+		Log.d("RAZ", "Calculate Result: " + resultString);
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode,
-	        Intent data) {
-	    if (requestCode == SPEECH_REQUEST && resultCode == RESULT_OK) {
-	        ArrayList<String> voiceResults = data.getStringArrayListExtra(
-	                RecognizerIntent.EXTRA_RESULTS);
-	        String spokenText = voiceResults.get(0);
-	        
-	        calculateResult(spokenText);
-	    }
-	    super.onActivityResult(requestCode, resultCode, data);
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d("RAZ", "Option selected");
+		if (item.getItemId() == R.id.ask_again) {
+			Log.d("RAZ", "Option selected - ask again");
+			displaySpeechRecognizer();
+		}
+
+		return true;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == SPEECH_REQUEST && resultCode == RESULT_OK) {
+			ArrayList<String> voiceResults = data
+					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+			String spokenText = voiceResults.get(0);
+
+			Log.d("RAZ", "Activity Result");
+			calculateResult(spokenText);
+		}
+
 	}
 
 	@Override

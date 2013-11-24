@@ -2,6 +2,7 @@ package com.cse3345.f13.friman;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Stack;
 
 import android.text.TextUtils;
@@ -26,6 +27,8 @@ public class EquationParser {
 
 		ArrayList<String> validTokens = new ArrayList<String>();
 
+		input = input.toLowerCase(Locale.US);
+
 		// Split the word by space
 		for (String word : input.split("\\s+")) {
 			if (word.length() > 0) {
@@ -37,7 +40,7 @@ public class EquationParser {
 					validTokens.add("2");
 				} else if (word.equals("three")) {
 					validTokens.add("3");
-				} else if (word.equals("four")) {
+				} else if (word.equals("four") || word.equals("for")) {
 					validTokens.add("4");
 				} else if (word.equals("five")) {
 					validTokens.add("5");
@@ -45,7 +48,7 @@ public class EquationParser {
 					validTokens.add("6");
 				} else if (word.equals("seven")) {
 					validTokens.add("7");
-				} else if (word.equals("eight")) {
+				} else if (word.equals("eight") || word.equals("ate")) {
 					validTokens.add("8");
 				} else if (word.equals("nine")) {
 					validTokens.add("9");
@@ -88,10 +91,32 @@ public class EquationParser {
 
 		// Add each token to the array
 		for (String token : splitted) {
-			tokens.add(token.trim());
+
+			if (token.startsWith("-")
+					&& isDouble(tokens.get(tokens.size() - 1))) {
+
+				// Add the minus sign separately
+				tokens.add("-");
+
+				// Add the number token separately
+				tokens.add(token.substring(1));
+			} else {
+				tokens.add(token.trim());
+			}
 		}
 
 		return tokens;
+	}
+
+	private boolean isDouble(String input) {
+		try {
+			Double.parseDouble(input);
+		} catch (NumberFormatException e) {
+			// Not a number
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -160,10 +185,10 @@ public class EquationParser {
 
 			if (t instanceof NumberToken) {
 				// Add numbers to the temporary queue
-				modifiedRpn.add((NumberToken)t);
+				modifiedRpn.add((NumberToken) t);
 			} else if (t instanceof OperatorToken) {
 				if (modifiedRpn.size() >= 2) {
-					
+
 					// Dequeue two operands for each operator
 					NumberToken t2 = (NumberToken) modifiedRpn.removeLast();
 					NumberToken t1 = (NumberToken) modifiedRpn.removeLast();
@@ -180,7 +205,7 @@ public class EquationParser {
 
 		// The result will value of the first token in the modified queue
 		result = modifiedRpn.get(0).mDoubleValue;
-		
+
 		return result;
 	}
 
