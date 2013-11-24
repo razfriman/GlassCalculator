@@ -19,9 +19,11 @@
             android:theme="@style/MenuTheme"
             android:enabled="true" >
             <intent-filter>
-            	<!-- PUT INTENT FILTER HERE -->    
+            	 <action
+                android:name="com.google.android.glass.action.VOICE_TRIGGER" />    
             </intent-filter>
-            <meta-data />
+            <meta-data android:name="com.google.android.glass.VoiceTrigger"
+            android:resource="@xml/voice_trigger" />
         </activity>
     </application>
 
