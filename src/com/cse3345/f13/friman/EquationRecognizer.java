@@ -59,6 +59,11 @@ public class EquationRecognizer extends Activity {
 	
 	private void calculateResult(String spokenText) {
 		
+		String convertedInput = mEquationParser.preprocessEquation(spokenText);
+		
+		double result = mEquationParser.parseEquation(spokenText);
+		
+		
 	}
 	
 	@Override

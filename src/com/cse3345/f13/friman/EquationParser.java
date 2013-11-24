@@ -21,7 +21,7 @@ public class EquationParser {
 	 * @param input
 	 * @return the preprocessed input, ready for tokenization
 	 */
-	private String preprocessEquation(String input) {
+	public String preprocessEquation(String input) {
 		String output = "";
 
 		ArrayList<String> validTokens = new ArrayList<String>();
