@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="4 + 5"
+        android:text="4 + 5 + 2"
         android:textSize="45sp" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/input_expression_text_view"
         android:layout_marginTop="30dp"
-        android:text="Answer: 9"
+        android:text="Answer: 11"
         android:textSize="60sp" />
 
 </RelativeLayout>

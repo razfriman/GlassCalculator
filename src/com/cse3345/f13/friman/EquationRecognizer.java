@@ -65,7 +65,7 @@ public class EquationRecognizer extends Activity {
 
 		double result = mEquationParser.parseEquation(spokenText);
 		String resultString = String.format(Locale.US, "%.2f", result);
-		
+
 		// Set the input
 		TextView inputTextView = (TextView) findViewById(R.id.input_expression_text_view);
 		inputTextView.setText(convertedInput);
@@ -99,7 +99,6 @@ public class EquationRecognizer extends Activity {
 			Log.d("RAZ", "Activity Result");
 			calculateResult(spokenText);
 		}
-
 	}
 
 	@Override

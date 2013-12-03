@@ -101,6 +101,26 @@ public class EquationParser {
 				// Add the number token separately
 				tokens.add(token.substring(1));
 			} else {
+				
+				if (tokens.size() > 0) {
+					// Try to fix uncombined tokens
+					
+					// 1 + 100 10 + 2 > 1 + 110 + 2
+					
+					String previous = tokens.get(tokens.size() - 1);
+					try {
+						double prev = Double.parseDouble(previous);
+						double current = Double.parseDouble(token.trim());
+						
+						tokens.remove(tokens.size() - 1);
+						tokens.add(Double.toString(prev + current));
+					} catch (NumberFormatException e) {
+						
+						// Not a number
+						tokens.add(token.trim());
+					}
+					
+				}
 				tokens.add(token.trim());
 			}
 		}
