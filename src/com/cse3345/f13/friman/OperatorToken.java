@@ -1,5 +1,7 @@
 package com.cse3345.f13.friman;
 
+import android.util.Log;
+
 public class OperatorToken extends Token {
 	public int mPrecedence;
 
@@ -27,6 +29,8 @@ public class OperatorToken extends Token {
 		} else if (mValue.equals("/")) {
 			result = value1 / value2;
 		}
+		
+		Log.d("RAZ", "[" + mValue + "] OPERATOR RESULT: " + result + " | " + value1 + " | " + value2);
 		
 		return result;
 	}

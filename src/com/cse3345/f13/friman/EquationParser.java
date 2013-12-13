@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Stack;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Class that can parse and compute the value of an arithmetic equation Builds a
@@ -92,7 +93,9 @@ public class EquationParser {
 		// Add each token to the array
 		for (String token : splitted) {
 
-			if (token.startsWith("-")
+			Log.d("RAZ","TOKEN: " + token);
+			
+			if (token.startsWith("-") && token.length() > 1
 					&& isDouble(tokens.get(tokens.size() - 1))) {
 
 				// Add the minus sign separately
@@ -103,11 +106,17 @@ public class EquationParser {
 			} else {
 				
 				if (tokens.size() > 0) {
-					// Try to fix uncombined tokens
+					// Try to fix non-combined tokens
 					
-					// 1 + 100 10 + 2 > 1 + 110 + 2
+					// 1 + 100 10 + 2
+					// 1 + 110 + 2
+					
+					// 5
 					
 					String previous = tokens.get(tokens.size() - 1);
+					
+					Log.d("RAZ","old=" + previous);
+					
 					try {
 						double prev = Double.parseDouble(previous);
 						double current = Double.parseDouble(token.trim());
@@ -120,8 +129,9 @@ public class EquationParser {
 						tokens.add(token.trim());
 					}
 					
+				} else {
+					tokens.add(token.trim());
 				}
-				tokens.add(token.trim());
 			}
 		}
 
@@ -196,6 +206,12 @@ public class EquationParser {
 
 		double result = 0;
 
+		// 18 45 10
+		// 18 450
+		// -420
+		//18 45 10 * -
+		// 18 450 -
+		// -432
 		// Queue to hold all temporary computations
 		LinkedList<NumberToken> modifiedRpn = new LinkedList<NumberToken>();
 
@@ -213,10 +229,12 @@ public class EquationParser {
 					NumberToken t2 = (NumberToken) modifiedRpn.removeLast();
 					NumberToken t1 = (NumberToken) modifiedRpn.removeLast();
 
+					Log.d("RAZ","A=" + t1.mDoubleValue + "   b=" + t2.mDoubleValue);
 					// Compute the result of the operation
-					double operationResult = ((OperatorToken) t)
-							.computeOperator(t1.mDoubleValue, t2.mDoubleValue);
+					double operationResult = ((OperatorToken) t).computeOperator(t1.mDoubleValue, t2.mDoubleValue);
 
+					Log.d("RAZ","OP RESULT " + operationResult);
+					
 					// Push the value into the queue
 					modifiedRpn.add(new NumberToken(operationResult));
 				}
@@ -225,6 +243,9 @@ public class EquationParser {
 
 		// The result will value of the first token in the modified queue
 		result = modifiedRpn.get(0).mDoubleValue;
+		
+		Log.d("RAZ","RESULT SIZE: " + modifiedRpn.size());
+		Log.d("RAZ","RESULT:" + result);
 
 		return result;
 	}
